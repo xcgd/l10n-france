@@ -6,14 +6,15 @@
 {
     "name": "France - FEC",
     "category": "Accounting",
-    "version": "14.0.1.0.2",
+    "version": "13.0.1.0.0",
     "license": "LGPL-3",
     "summary": "Fichier d'Échange Informatisé (FEC) for France",
     "author": "Akretion,Odoo Community Association (OCA)",
     "maintainers": ["alexis-via"],
     "website": "https://github.com/OCA/l10n-france",
     "depends": ["l10n_fr", "account", "date_range"],
+    "excludes": ["l10n_fr_fec"],
     "external_dependencies": {"python": ["unicodecsv", "unidecode"]},
-    "data": ["security/ir.model.access.csv", "wizard/account_fr_fec_oca_view.xml"],
+    "data": ["wizard/account_fr_fec_oca_view.xml"],
     "installable": True,
 }

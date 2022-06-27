@@ -88,6 +88,19 @@ class AccountFrFecOca(models.TransientModel):
         default="official",
     )
 
+    @api.model
+    def _get_default_property(self, name, model):
+        """ Get the given field's generic value for the record.
+
+        :param name: the field's name
+        :param model: the field's model name
+        """
+        prop = self.env["ir.property"]
+        t, v = prop._get_default_property(name, model)
+        if not v or t != "many2one":
+            return v
+        return prop.env[v[0]].browse(v[1])
+
     @api.onchange("date_range_id")
     def date_range_change(self):
         if self.date_range_id:
@@ -102,8 +115,8 @@ class AccountFrFecOca(models.TransientModel):
 
     @api.model
     def _default_partner_account_ids(self):
-        pay = self.env["ir.property"]._get("property_account_payable_id", "res.partner")
-        rec = self.env["ir.property"]._get(
+        pay = self._get_default_property("property_account_payable_id", "res.partner")
+        rec = self._get_default_property(
             "property_account_receivable_id", "res.partner"
         )
         return pay + rec
