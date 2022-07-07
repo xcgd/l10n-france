@@ -13,12 +13,7 @@
     "maintainers": ["alexis-via"],
     "website": "https://github.com/OCA/l10n-france",
     "depends": ["l10n_fr", "account", "date_range"],
-    "external_dependencies": {
-        "python": ["unicodecsv", "unidecode"],
-    },
-    "data": [
-        "security/ir.model.access.csv",
-        "wizard/account_fr_fec_oca_view.xml",
-    ],
+    "external_dependencies": {"python": ["unicodecsv", "unidecode"]},
+    "data": ["security/ir.model.access.csv", "wizard/account_fr_fec_oca_view.xml"],
     "installable": True,
 }

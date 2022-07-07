@@ -51,10 +51,7 @@ class AccountFrFecOca(models.TransientModel):
         required=True,
     )
     delimiter = fields.Selection(
-        [
-            ("|", "|"),
-            ("tab", "Tab"),
-        ],
+        [("|", "|"), ("tab", "Tab"),],
         default="|",
         string="Field Delimiter",
         required=True,
