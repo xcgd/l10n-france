@@ -32,6 +32,16 @@ class Partner(models.Model):
             else:
                 rec.siret = ''
 
+    @api.multi
+    def _inverse_siret(self):
+        for rec in self:
+            siret = rec.siret
+            if siret:
+                if len(siret) > 9:
+                    rec.write({"siren": siret[:9], "nic": siret[9:]})
+                else:
+                    rec.write({"siren": siret})
+
     @api.constrains('siren', 'nic')
     def _check_siret(self):
         """Check the SIREN's and NIC's keys (last digits)"""
@@ -55,7 +65,7 @@ class Partner(models.Model):
                         % rec.siren)
                 # Check the NIC key (you need both SIREN and NIC to check it)
                 if rec.nic and not _check_luhn(rec.siren + rec.nic):
-                    return UserError(
+                    raise UserError(
                         _("The SIRET '%s%s' is invalid: "
                           "the checksum is wrong.")
                         % (rec.siren, rec.nic))
@@ -77,7 +87,11 @@ class Partner(models.Model):
         "composes the last 5 digits of the SIRET "
         "number.")
     siret = fields.Char(
-        compute='_compute_siret', string='SIRET', size=14, store=True,
+        compute="_compute_siret",
+        inverse="_inverse_siret",
+        string="SIRET",
+        size=14,
+        store=True,
         help="The SIRET number is the official identity number of this "
         "company's office in France. It is composed of the 9 digits "
         "of the SIREN number and the 5 digits of the NIC number, ie. "
